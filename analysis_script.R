@@ -526,6 +526,11 @@ fviz_nbclust(x = as.matrix(bray_dist), FUNcluster = hcut, diss = bray_dist, meth
 # 
 # ggsave(site_dendro, filename = "maps_imgs/site_dendro.pdf", device = "pdf")
 
+### Checking richness with rarefaction see:
+## https://cran.r-project.org/web/packages/vegan/vignettes/diversity-vegan.pdf
+# Probably unnecessary in this context
+rarefy(abc_2020_wide_nmds, min(rowSums(abc_2020_wide_nmds)))
+
 
 # NMDS, incomplete. Decided dendro more appropriate for audience
 # https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/
