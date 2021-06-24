@@ -56,6 +56,9 @@ abc_2020_long <- abc_2020 %>%
   ungroup()
 
 
+# Quick code to look at individual sites
+abc_2020_long %>% filter(site_name %in% "kaitoke") %>% group_by(spp) %>% summarise(sig = sum(total)) %>% arrange(desc(sig))
+
 ### Check out some simple summaries
 ## Checking for unevenness in numer of transect surveyed or points per transect
 abc_2020_long_summary_by_site <- abc_2020_long %>%
