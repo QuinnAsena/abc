@@ -613,18 +613,22 @@ rarefy(abc_2020_wide_nmds, min(rowSums(abc_2020_wide_nmds)))
 
 # Additional interactive maps: --------------------------------------------
 # Not used
-# add markers no longer working since conversion to easting/northing
-# Can use lag lon cols
 # https://cengel.github.io/R-spatial/mapping.html#choropleth-mapping-with-ggplot2
 # https://ggplot2-book.org/maps.html
 # https://bookdown.org/lexcomber/brunsdoncomber2e/Ch5.html#spatial-intersection-and-clip-operations
 # https://geocompr.robinlovelace.net/adv-map.html
 # https://geocompr.github.io/post/2019/ggplot2-inset-maps/
 
+
+abc_2020_leaf <- abc_2020 %>%
+  select(c(20:26)) %>%
+  group_by(site_name, lat, long) %>%
+  distinct(lat, long)
+
 m <- leaflet() %>%
   setView(lng = 175.39079332, lat = -36.20271829, zoom = 11) %>%
   addTiles() %>%
-  addMarkers(~long, ~lat, popup = ~ as.character(site_name), label = ~ as.character(site_name), data = abc_2020_wide)
+  addMarkers(~long, ~lat, popup = ~ as.character(site_name), label = ~ as.character(site_name), data = abc_2020_leaf)
 
 
 # tmap
