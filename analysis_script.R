@@ -21,6 +21,15 @@ library(NbClust) # Also for determining the number of clusters
 # library(ggmap)
 
 
+# code notes --------------------------------------------------------------
+
+# Some of the following data wrangling can be compressed into two tibbles
+# one wide and one long. I did a few layers of chopping and changing
+# Can also include a secion for a series of exploratory plots. 
+# A full procedure/protocol for following reports.
+# this code can be considered as a section of a full protocol
+
+
 # Data wrangling ----------------------------------------------------------
 
 abc_2020 <- read_excel("ABC2020/abc_master_2020.xlsx")
@@ -58,6 +67,7 @@ abc_2020_long <- abc_2020 %>%
 
 # Quick code to look at individual sites
 abc_2020_long %>% filter(site_name %in% "kaitoke") %>% group_by(spp) %>% summarise(sig = sum(total)) %>% arrange(desc(sig))
+abc_2020_long %>% filter(spp %in% "Unknown_Plover")
 
 ### Check out some simple summaries
 ## Checking for unevenness in numer of transect surveyed or points per transect
