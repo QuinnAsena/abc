@@ -488,6 +488,24 @@ total_target_counts_map <- gbi_total_count_map + gbi_target_spp_map
 ggsave(total_target_counts_map, filename = "maps_imgs/total_target_counts_map.png", device = "png", width = 10, dpi = 600)
 
 
+# Glenfern ----------------------------------------------------------------
+
+abc_2019 <- read_excel("ABC2020/ABC- Master data 2019.xlsx")
+
+abc_2019 <- abc_2019 %>% 
+  select(c(2, 12, 19)) %>%
+  rename_with(~ c("site_name", "spp", "total")) %>%
+  filter(!grepl("Unknown", spp)) %>%
+  group_by(site_name, spp) %>%
+  summarise(total = sum(total)) %>%
+  mutate(spp = str_replace_all(spp, " ", "_")) %>%
+  ungroup()
+
+
+abc_2019 %>% filter(site_name %in% "G") %>% group_by(spp) %>% summarise(sig = sum(total)) %>% arrange(desc(sig))
+abc_2020_long %>% filter(site_name %in% "glenfern") %>% group_by(spp) %>% summarise(sig = sum(total)) %>% arrange(desc(sig))
+
+
 
 
 # NMDS and dendro ---------------------------------------------------------
