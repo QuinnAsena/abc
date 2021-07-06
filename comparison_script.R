@@ -28,7 +28,7 @@ abc_2019_long <- abc_2019 %>%
   summarise(total = sum(total)) %>%
   mutate(spp = str_replace_all(spp, " ", "_"),
          site_name = case_when(site_name %in% "A" ~ "awana", 
-                               site_name %in% "C" ~ "claris", # not sure here
+                               site_name %in% "C" ~ "kaitoke", # not sure here
                                site_name %in% "CC" ~ "cooper_castle",
                                site_name %in% "G" ~ "glenfern",
                                site_name %in% "H" ~ "haratoanga",
