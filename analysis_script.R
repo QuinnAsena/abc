@@ -47,8 +47,7 @@ length(abc_2020$Species[grepl("Rail", abc_2020$Species)])
 abc_2020 %>% 
   select(Species, cons_status, nz_cons_status) %>% 
   filter(nz_cons_status %in% c("Native", "Endemic")) %>% 
-  distinct(Species, .keep_all = T) %>% 
-  mutate(native_endemic =)
+  distinct(Species, .keep_all = T)
 
 ### Create a long dataset of spp per transect point
 ## some unnecessary code left over
