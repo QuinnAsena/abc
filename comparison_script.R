@@ -1,6 +1,8 @@
 library(tidyverse) # For data wrangling and plotting
 library(readxl) # to read in excel sheets
-
+library(viridis)
+library(vegan)
+library(ggrepel)
 
 abc_2020 <- read_excel("ABC2020/abc_master_2020.xlsx")
 
@@ -14,7 +16,21 @@ abc_2020_long <- abc_2020 %>%
   group_by(site_name, transect_set, transect_point, easting, northing, spp, nz_cons_status) %>%
   summarise(total = sum(total)) %>%
   mutate(spp = str_replace_all(spp, " ", "_"),
+         site_name = str_replace_all(site_name, "wreck_bay", "rangiwhakaea_bay"),
          year = 2020) %>%
+  ungroup()
+
+
+abc_2020_wide_summary_by_site <- abc_2020_long %>%
+  group_by(year, site_name, spp) %>%
+  summarise(total_count_per_spp = sum(total)) %>%
+  pivot_wider(names_from = spp, values_from = total_count_per_spp, names_prefix = "spp_") %>%
+  replace(is.na(.), 0) %>%
+  ungroup() %>%
+  mutate(
+    divers_by_site = diversity(select(., starts_with("spp_")), "shannon", MARGIN = 1),
+    rich_by_site = rowSums(select(., starts_with("spp_")) > 0)
+  ) %>%
   ungroup()
 
 
@@ -47,12 +63,40 @@ abc_2019_long <- abc_2019 %>%
          year = 2019) %>%
   ungroup()
 
-head(abc_2019_long)
-head(abc_2020_long)
+unique(abc_2019_long$spp)
+abc_2019_long <- abc_2019_long %>%
+  mutate(spp = str_replace_all(spp, "DunNck", "Duck_sp"))
 
 abc_19_20_long <- bind_rows(abc_2020_long, abc_2019_long)
 head(abc_19_20_long)
 tail(abc_19_20_long)
+
+
+abc_2019_wide_summary_by_site <- abc_2019_long %>%
+  group_by(year, site_name, spp) %>%
+  summarise(total_count_per_spp = sum(total)) %>%
+  pivot_wider(names_from = spp, values_from = total_count_per_spp, names_prefix = "spp_") %>%
+  replace(is.na(.), 0) %>%
+  ungroup() %>%
+  mutate(
+    divers_by_site = diversity(select(., starts_with("spp_")), "shannon", MARGIN = 1),
+    rich_by_site = rowSums(select(., starts_with("spp_")) > 0)
+  ) %>%
+  ungroup()
+
+
+
+abc_19_20_wide <- bind_rows(abc_2020_wide_summary_by_site, abc_2019_wide_summary_by_site) %>%
+  mutate(site_label = str_to_title(str_replace_all(site_name, "_", " ")))
+
+
+
+ggplot(abc_19_20_wide, aes(x = year, y = divers_by_site, group = site_name)) +
+  geom_line(aes(colour = site_name)) +
+  geom_point(aes(colour = site_name)) +
+  scale_color_viridis(discrete = T) +
+  geom_text_repel(aes(label = site_label)) +
+  theme_minimal()
 
 
 

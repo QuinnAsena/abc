@@ -1,5 +1,6 @@
 library(tidyverse) # For data wrangling and plotting
 library(readxl) # to read in excel sheets
+# https://github.com/G-Thomson/Manu
 library(Manu) # for pretty native bird colours on the plots
 library(ggthemes) # more themes
 library(vegan) # For the vegdist function
@@ -60,7 +61,8 @@ abc_2020_long <- abc_2020 %>%
   filter(!grepl("Unknown", spp)) %>%
   group_by(site_name, transect_set, transect_point, easting, northing, spp, nz_cons_status) %>%
   summarise(total = sum(total)) %>%
-  mutate(spp = str_replace_all(spp, " ", "_")) %>%
+  mutate(spp = str_replace_all(spp, " ", "_"),
+         site_name = str_replace_all(site_name, "wreck_bay", "rangiwhakaea_bay")) %>%
   ungroup()
 
 
