@@ -3,6 +3,7 @@ library(readxl) # to read in excel sheets
 library(viridis)
 library(vegan)
 library(ggrepel)
+library(patchwork)
 
 abc_2020 <- read_excel("ABC2020/abc_master_2020.xlsx")
 
@@ -91,16 +92,41 @@ abc_19_20_wide <- bind_rows(abc_2020_wide_summary_by_site, abc_2019_wide_summary
 
 
 
-ggplot(abc_19_20_wide, aes(x = year, y = divers_by_site, group = site_name)) +
+rich_bump <- ggplot(abc_19_20_wide, aes(x = year, y = rich_by_site, group = site_name)) +
   geom_line(aes(colour = site_name)) +
   geom_point(aes(colour = site_name)) +
+  scale_x_continuous(limits = c(2019,2020), breaks = c(2019,2020),
+                     expand = expansion(mult = 0.4))+
   scale_color_viridis(discrete = T) +
-  geom_text_repel(aes(label = site_label)) +
-  theme_minimal()
+  geom_text_repel(data = abc_19_20_wide %>% filter(year == 2019), 
+                  aes(label = site_label), nudge_x = -0.2, size = 3) +
+  geom_text_repel(data = abc_19_20_wide %>% filter(year == 2020), 
+                  aes(label = site_label), nudge_x = 0.2, size = 3) +
+  labs(x = "Year", y = "Species richness", title = "A") +
+  
+  theme_minimal() +
+  theme(legend.position = "none")
 
 
+divers_bump <- ggplot(abc_19_20_wide, aes(x = year, y = divers_by_site, group = site_name)) +
+  geom_line(aes(colour = site_name)) +
+  geom_point(aes(colour = site_name)) +
+  scale_x_continuous(limits = c(2019,2020), breaks = c(2019,2020),
+                     expand = expansion(mult = 0.4))+
+  scale_color_viridis(discrete = T) +
+  geom_text_repel(data = abc_19_20_wide %>% filter(year == 2019), 
+                  aes(label = site_label), nudge_x = -0.2, size = 3) +
+  geom_text_repel(data = abc_19_20_wide %>% filter(year == 2020), 
+                  aes(label = site_label), nudge_x = 0.2, size = 3) +
+  labs(x = "Year", y = "Species diversity (Shannon's H)", title = "B") +
+  
+  theme_minimal() +
+  theme(legend.position = "none")
 
 
+rich_diverse_bump <- rich_bump + divers_bump
+
+ggsave(rich_diverse_bump, filename = "maps_imgs/rich_diverse_bump.png", device = "png", dpi = 600, width = 13, height = 10)
 
 
 
