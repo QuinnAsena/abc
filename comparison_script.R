@@ -102,7 +102,8 @@ rich_bump <- ggplot(abc_19_20_wide, aes(x = year, y = rich_by_site, group = site
                   aes(label = site_label), nudge_x = -0.2, size = 3.33) +
   geom_text_repel(data = abc_19_20_wide %>% filter(year == 2020), 
                   aes(label = site_label), nudge_x = 0.2, size = 3.33) +
-  labs(x = "Year", y = "Species richness", title = "A") +
+  labs(x = "Year", y = "Species richness") +
+  # labs(x = "Year", y = "Species richness", title = "A") +
   
   theme_minimal() +
   theme(legend.position = "none")
@@ -118,7 +119,8 @@ divers_bump <- ggplot(abc_19_20_wide, aes(x = year, y = divers_by_site, group = 
                   aes(label = site_label), nudge_x = -0.2, size = 3.33) +
   geom_text_repel(data = abc_19_20_wide %>% filter(year == 2020), 
                   aes(label = site_label), nudge_x = 0.2, size = 3.33) +
-  labs(x = "Year", y = "Species diversity (Shannon's H)", title = "B") +
+  labs(x = "Year", y = "Species diversity (Shannon's H)") +
+  # labs(x = "Year", y = "Species diversity (Shannon's H)", title = "B") +
   
   theme_minimal() +
   theme(legend.position = "none")
@@ -126,7 +128,7 @@ divers_bump <- ggplot(abc_19_20_wide, aes(x = year, y = divers_by_site, group = 
 
 rich_diverse_bump <- rich_bump + divers_bump
 
-ggsave(rich_diverse_bump, filename = "maps_imgs/rich_diverse_bump.png", device = "png", dpi = 600, width = 13, height = 10)
+# ggsave(rich_diverse_bump, filename = "maps_imgs/rich_diverse_bump.png", device = "png", dpi = 600, width = 13, height = 10)
 
 
 ggsave(rich_bump, filename = "maps_imgs/rich_bump.png", device = "png", dpi = 600, width = 8, height = 9)
