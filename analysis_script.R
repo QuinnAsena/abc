@@ -68,7 +68,7 @@ abc_2020_long <- abc_2020 %>%
 
 # Quick code to look at individual sites
 abc_2020_long %>% filter(site_name %in% "kaitoke") %>% group_by(spp) %>% summarise(sig = sum(total)) %>% arrange(desc(sig))
-abc_2020_long %>% filter(spp %in% "Unknown_Plover")
+abc_2020_long %>% filter(spp %in% "Grey_Warbler")
 
 ### Check out some simple summaries
 ## Checking for unevenness in numer of transect surveyed or points per transect
@@ -288,8 +288,8 @@ map_lables <- abc_2020_wide_summary %>%
   mutate(
     site_name = str_to_title(str_replace_all(site_name, "_", " ")),
     site_name = if_else(site_name %in% "Cooper Castle", "Cooper's Castle", as.character(site_name)),
-    x_nudge = c(-5, 3, -10, -5, -2, -2, 5, 0, 0, 0, -3, 0, 0, -3, -3, -10),
-    y_nudge = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    x_nudge = c(-5, 3, -10, -5, -2, -2, 5, 0, 0, 0, -3, 0, 0, -3, -3, -10, 0),
+    y_nudge = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
   )
 
 
@@ -547,7 +547,7 @@ n_clust$Best.nc
 library(factoextra)
 fviz_nbclust(x = as.matrix(bray_dist), FUNcluster = hcut, diss = bray_dist, method = "wss", k.max = 15) + 
   theme_minimal() + 
-  ggtitle("The Silhouette Plot")
+  ggtitle("The wss Plot")
 
 
 ### ggdendro not used, I wanted coloured branches...
